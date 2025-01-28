@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
         required:true,
         unique:true
     },
+    "name":{
+        type:String,
+        required:true
+    },
     "email":{
         type:String,
         required:true,
@@ -23,11 +27,6 @@ const userSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-userSchema.methods.toJSON = function(){
-    const user = this.toObject();
-    delete user.password;
-    return user;
-}
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
@@ -42,6 +41,13 @@ userSchema.methods.matchPassword = function (enteredPassword) {
   console.log("this is working");
   return bcrypt.compare(enteredPassword, this.password);
 };
+
+userSchema.methods.toJSON = function(){
+    const user = this.toObject();
+    delete user.password;
+    return user;
+}
+
 
 userSchema.index({email:1});
 userSchema.index({userName:1});
