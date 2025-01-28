@@ -7,6 +7,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import http from "http";
+import * as routes from "./routes";
 
 const app = express();
 dotenv.config();
@@ -35,10 +36,7 @@ app.use(cors(
     {origin:['*'],credentials:true}
 ));
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
-
+app.use("/api", routes.baseRoutes);
 
 server.listen(port, () => {
  console.log(`Server is running on port ${port}`);
