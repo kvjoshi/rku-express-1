@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/",userProtectBearer, bookController.listBooks);
 router.post("/create",userProtectBearer, bookController.createBook);
-router.get("/:id",userProtectBearer, bookController.getBook);
-router.get("/user", userProtectBearer,bookController.booksByUser);
+router.get("/find/:id",userProtectBearer, bookController.getBook);
+router.get("/user/", userProtectBearer,bookController.booksByUser);
 
 export default router;

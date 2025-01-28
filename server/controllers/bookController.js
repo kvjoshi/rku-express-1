@@ -50,9 +50,33 @@ export const getBook = expressAsyncHandler(async (req, res) => {
 export const booksByUser = expressAsyncHandler(async (req, res) => {
     try {
         const user = req.user;
-                // const userId = mongoose.Types.ObjectId(user._id);
-        const userId = user._id;
-        const books = await Book.find({ added_by: userId });
+        console.log("user", user);
+
+        const userId =  new ObjectId(user._id);
+        const books = await Book.aggregate([
+            { $match: { added_by: userId } },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "added_by",
+                    foreignField: "_id",
+                    as: "userDetails"
+                }
+            },
+            { $unwind: "$userDetails" },
+            {
+                $project: {
+                    book_name: 1,
+                    info: 1,
+                    added_by: 1,
+                    userDetails: {
+                        _id: 1,
+                        name: 1,
+                        email: 1
+                    }
+                }
+            }
+        ]);
         res.json(books);
     } catch (e) {
         res.status(404).json({ message: e.message });
