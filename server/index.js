@@ -29,6 +29,8 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+console.log("https://github.com/kvjoshi/rku-express-1");
+
 app.use(cors(
     {origin:['*'],credentials:true}
 ));
