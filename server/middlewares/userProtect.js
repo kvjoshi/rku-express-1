@@ -2,25 +2,37 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 
+// this is a secret key to ccreate a jwt token
 const userSecret = "SECRET123";
 
-export const userGenerateToken = (id) => {
-	return jwt.sign({ id }, userSecret, {
-		expiresIn: "1d",
+export const userGenerateToken = (id, username) => {
+	return jwt.sign({ id , username}, userSecret, {
+		expiresIn: "1d",// the token will expire in 1 day
 	});
 };
 
 
 export const userProtectBearer = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization;
+	
+	//extracting token from req headers 
+
 	// "Bearer token"
+
     if (!token) {
+		// if no token is provided we reject the request
         return res.status(401).json({ message: "No token, authorization denied" });
     }
     try {
-        const decoded = jwt.verify(token, userSecret);
-        req.user = await User.findById(decoded.id).select("-password");
-        console.log("req.user", req.user);
+		// decode token to get user id
+        const decoded_token = jwt.verify(token, userSecret);
+		// the decode token the user id is stored
+		
+		//  decode -> {id: "ObjectId" , userName: "username"}
+
+        req.user = await User.findById(decoded_token.id).select("-password");
+    
+		console.log("req.user", req.user);
         next();
     } catch (error) {
         res.status(401);

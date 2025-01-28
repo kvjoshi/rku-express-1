@@ -1,6 +1,10 @@
 import expressAsyncHandler from "express-async-handler";
 import  Book  from "../models/bookModel.js";
 
+
+// _req is suggested when we are not refrenceing the request object
+// req can be used but eslint will give a warning
+// expressAsyncHandler is used to handle async errors
 export const listBooks = expressAsyncHandler(async (_req, res) => {
     try{
         const books = await Book.find({});
@@ -24,6 +28,10 @@ export const createBook = expressAsyncHandler(async (req, res) => {
 
 export const getBook = expressAsyncHandler(async (req, res) => {
     const id = req.params.id;
+
+    // can also use req.query.id
+    // can also use req.body
+
     try{
         const book = await Book.findById(id);
         if(book){
