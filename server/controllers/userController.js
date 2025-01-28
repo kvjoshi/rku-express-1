@@ -1,16 +1,27 @@
 import expressAsyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import { userGenerateToken } from "../middlewares/userProtect.js";
 
 export const loginUser = expressAsyncHandler(async (req, res) => {
     const {email, password} = req.body;
     try{
         const user = await User.findOne({email});
+
+		const cookieArgs = {
+			httpOnly: false,
+			secure: true,
+			sameSite: "none",
+			maxAge: 2 * 60 * 60 * 1000, // 2 hours
+		};
         if(user){
             if( (await user.matchPassword(password))) {
+            const token = userGenerateToken(user._id);
+            res.cookie("accessToken", token, cookieArgs);
             res.json({
                 _id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                token: token,
             });
         }
         else{
