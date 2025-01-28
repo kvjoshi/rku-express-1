@@ -32,7 +32,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 
 app.use(cors(
-    {origin:['*'],credentials:true}
+    {
+        origin:['*'],
+        credentials:true
+    }
 ));
 
 app.use("/api", routes.baseRoutes);
