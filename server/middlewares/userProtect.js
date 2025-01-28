@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
-const asyncHandler = require("express-async-handler");
+import jwt from "jsonwebtoken";
+import User from "../models/userModel.js";
+import asyncHandler from "express-async-handler";
 
 // this is a secret key to ccreate a jwt token
 const userSecret = "SECRET123";
