@@ -10,8 +10,9 @@ const bookSchema = new mongoose.Schema({
         required: true,
     },
     "added_by":{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"user",
+        // type:mongoose.Schema.Types.ObjectId,
+        type:String,
+        // ref:"user",
         required:true
     }
 },

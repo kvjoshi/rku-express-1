@@ -1,5 +1,7 @@
 import expressAsyncHandler from "express-async-handler";
 import  Book  from "../models/bookModel.js";
+import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 
 
 // _req is suggested when we are not refrenceing the request object
@@ -46,12 +48,13 @@ export const getBook = expressAsyncHandler(async (req, res) => {
 });
 
 export const booksByUser = expressAsyncHandler(async (req, res) => {
-    const user = req.user;
-    const id = user._id;
-    try{
-        const books = await Book.find({added_by:id});
+    try {
+        const user = req.user;
+                // const userId = mongoose.Types.ObjectId(user._id);
+        const userId = user._id;
+        const books = await Book.find({ added_by: userId });
         res.json(books);
-    }catch (e) {
-        res.status(500).json({ message: e.message });
+    } catch (e) {
+        res.status(404).json({ message: e.message });
     }
 });

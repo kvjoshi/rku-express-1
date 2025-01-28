@@ -14,7 +14,7 @@ export const userGenerateToken = (id) => {
 
 export const userProtectBearer = asyncHandler(async (req, res, next) => {
     let token = req.headers.authorization;
-	console.log("token", token);
+	// console.log("token", token);
 	//extracting token from req headers 
 
 	// "Bearer token"
@@ -28,7 +28,7 @@ export const userProtectBearer = asyncHandler(async (req, res, next) => {
     try {
 			token = req.headers.authorization.split(" ")[1];
 		// decode token to get user id
-		console.log("only token:",token);
+
         const decoded_token = jwt.verify(token, userSecret);
 		// the decode token the user id is stored
 		
@@ -36,7 +36,7 @@ export const userProtectBearer = asyncHandler(async (req, res, next) => {
 
         req.user = await User.findById(decoded_token.id).select("-password");
     
-		console.log("req.user", req.user);
+		// console.log("req.user", req.user);
         next();
     } catch (error) {
 		console.log(error);
