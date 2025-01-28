@@ -36,3 +36,14 @@ export const getBook = expressAsyncHandler(async (req, res) => {
         res.status(500).json({ message: e.message });
     }
 });
+
+export const booksByUser = expressAsyncHandler(async (req, res) => {
+    const user = req.user;
+    const id = user._id;
+    try{
+        const books = await Book.find({added_by:id});
+        res.json(books);
+    }catch (e) {
+        res.status(500).json({ message: e.message });
+    }
+});

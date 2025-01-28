@@ -9,6 +9,11 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    "added_by":{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user",
+        required:true
+    }
 },
     {
         timestamps: true,

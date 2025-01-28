@@ -48,7 +48,9 @@ export const createUser = expressAsyncHandler(async (req, res) => {
 });
 
 export const getUser = expressAsyncHandler(async (req, res) => {
-    const id = req.params.id;
+    // const id = req.params.id;
+    const user = req.user;
+    const id = user._id;
     try{
         const user = await User.findById(id);
         if(user){

@@ -13,6 +13,7 @@ export const userGenerateToken = (id) => {
 
 export const userProtectBearer = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization;
+	// "Bearer token"
     if (!token) {
         return res.status(401).json({ message: "No token, authorization denied" });
     }
@@ -36,7 +37,6 @@ export const userProtectCookie = asyncHandler(async (req, res, next) => {
 	}
 
 	//user request give token and bearer
-
 	try {
 		//decode token user id
 		const decoded = jwt.verify(accessToken, userSecret);
