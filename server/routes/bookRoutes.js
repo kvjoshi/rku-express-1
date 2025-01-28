@@ -4,9 +4,9 @@ import { userProtectBearer } from "../middlewares/userProtect.js";
 
 const router = express.Router();
 
-router.get("/", bookController.listBooks);
-router.post("/create", bookController.createBook);
-router.get("/:id", bookController.getBook);
+router.get("/",userProtectBearer, bookController.listBooks);
+router.post("/create",userProtectBearer, bookController.createBook);
+router.get("/:id",userProtectBearer, bookController.getBook);
 router.get("/user", userProtectBearer,bookController.booksByUser);
 
 export default router;

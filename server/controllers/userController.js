@@ -22,7 +22,7 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 
             if( (await user.matchPassword(password))) {
             // create token (JWT) and send it to the user
-                const token = userGenerateToken(user._id , user.userName);
+                const token = userGenerateToken(user._id);
             //this is a server side cookie this is not going to be accessible by the client application
             //this is a secure way to store the token
                 res.cookie("accessToken", token, cookieArgs);
@@ -49,15 +49,17 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 })
 
 export const createUser = expressAsyncHandler(async (req, res) => {
-    const {name, email, password} = req.body;
-    // sendinng everything in body and in plaintext
+    const {name,userName, email, password , role} = req.body;
+    // sending everything in body and in plaintext
     try{
-        // saveing this as plaintext
-        const user = new User({name, email, password});
+        // saving this as plaintext
+        const user = new User({name,userName, email, password , role});
 
-        // now we call save method on the user object , password is automatically hashed and stored
+        // now we call save method on the user object , password is automatically hashed and stored.
         const createdUser = await user.save();
+
         res.status(201).json(createdUser);
+        // response will not have password as it is removed in the toJSON method of the user model.
 
     }catch (e) {
         res.status(500).json({ message: e.message });
@@ -69,7 +71,7 @@ export const getUser = expressAsyncHandler(async (req, res) => {
     const user = req.user;
     const id = user._id;
     res.send(user);
-    //if im addign the user object to the request object then i can access it here
+    //if im adding the user object to the request object then i can access it here
     
     // try{
     //     const user = await User.findById(id);

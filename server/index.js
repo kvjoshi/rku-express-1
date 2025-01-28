@@ -55,6 +55,7 @@ app.use(cors(
 // adding routes to the app.
 app.use("/api", routes.baseRoutes);
 app.use("/api/books", routes.bookRoutes);
+app.use("/api/users", routes.userRoutes);
 
 // starting the server. with port 3000 which is defined in .env file.
 server.listen(port, () => {

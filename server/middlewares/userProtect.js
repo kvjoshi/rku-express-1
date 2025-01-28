@@ -2,19 +2,19 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
 
-// this is a secret key to ccreate a jwt token
+// this is a secret key to create a jwt token
 const userSecret = "SECRET123";
 
-export const userGenerateToken = (id, username) => {
-	return jwt.sign({ id , username}, userSecret, {
+export const userGenerateToken = (id) => {
+	return jwt.sign({ id}, userSecret, {
 		expiresIn: "1d",// the token will expire in 1 day
 	});
 };
 
 
 export const userProtectBearer = asyncHandler(async (req, res, next) => {
-    const token = req.headers.authorization;
-	
+    let token = req.headers.authorization;
+	console.log("token", token);
 	//extracting token from req headers 
 
 	// "Bearer token"
@@ -23,8 +23,12 @@ export const userProtectBearer = asyncHandler(async (req, res, next) => {
 		// if no token is provided we reject the request
         return res.status(401).json({ message: "No token, authorization denied" });
     }
+	if (req.headers.authorization?.startsWith("Bearer")) {
+
     try {
+			token = req.headers.authorization.split(" ")[1];
 		// decode token to get user id
+		console.log("only token:",token);
         const decoded_token = jwt.verify(token, userSecret);
 		// the decode token the user id is stored
 		
@@ -35,9 +39,13 @@ export const userProtectBearer = asyncHandler(async (req, res, next) => {
 		console.log("req.user", req.user);
         next();
     } catch (error) {
+		console.log(error);
         res.status(401);
         throw new Error("Not authorized, token failed");
-    }
+    }}else{
+		res.status(401);
+		throw new Error("Not authorized, No token");
+	}
 });
 
 

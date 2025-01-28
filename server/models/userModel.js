@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         // it is req and unique
         required:true,
-        unique:true
+        // unique:true
     },
     "name":{
         type:String,
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     "email":{
         type:String,
         required:true,
-        unique:true
+        // unique:true
     },
     "password":{
         type:String,
